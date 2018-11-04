@@ -4,9 +4,10 @@
 
 
 Expect is a Julia implementation of the proposed C++ feature `std::expected`.
-The [talk by Andrei Alexandrescu](https://www.youtube.com/watch?v=PH4WBuE1BHI&t=2383s) gives a
-good summary of the reasons and is recommended watching.
-Note that it is still unknown to the author if this pattern is useful in a dynamically typed language like Julia,
+The [talk by Andrei Alexandrescu at CppCon 2018](https://www.youtube.com/watch?v=PH4WBuE1BHI&t=2383s) gives a
+good summary of the reasons and is recommended watching. `std::expected` has some similarities to the [`Result` type
+in Rust](https://doc.rust-lang.org/std/result/enum.Result.html).
+It is still unknown to the author if this pattern is useful in a dynamically typed language like Julia,
 hence this package to try it out.
 
 In short, `std::expected` (in this package exported as `Expected`) is a wrapper
@@ -15,9 +16,10 @@ The wrapped value is accessed using `v[]` which will in the bad case throw.
 Functions using `Expected` should annotate the return type of the function as
 `::Expected{T, E}` where `T` is the type of the expected value and `E` is the type of the
 "unexpected" value (what we want to return in the bad case).
-If `T == E` then in the bad case one needs to wrap the return value using `unexpected`.
-Automatic conversion from the function return type annotation takes care of the rest.
-`isassigned` can be used to see if an `Expected` is in the good case.
+If `T == E`, in the bad case, the return value `v` needs to be wrapped using `unexpected(v)` to distinguish
+it from the good case.
+Conversion based on the function return type annotation takes care of the rest.
+The function `isassigned` can be used to see if an `Expected` is in the good case.
 
 Let's say we have some integer division routine that we want to return an error when
 we divide by zero (note that Julia already throws an error for this).

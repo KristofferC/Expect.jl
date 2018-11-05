@@ -19,6 +19,6 @@ unexpected(x) = Unexpected(x)
 convert(::Type{Expected{T,E}}, v::Unexpected{E}) where {T, E} = Expected{T, E}(v.v, false)
 
 isassigned(e::Expected) = e.ok
-(getindex(e::Expected{T})::T) where {T} = isassigned(e) ? e.v : throw(e.v)
+@inline (getindex(e::Expected{T})::T) where {T} = isassigned(e) ? e.v : throw(e.v)
 
 end # module
